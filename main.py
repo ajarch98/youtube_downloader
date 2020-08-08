@@ -20,12 +20,8 @@ def on_progress(stream, chunk, bytes_remaining):
     sys.stdout.flush()
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--url', required=True)
-    args = parser.parse_args()
-
-    yt = YouTube(args.url, on_progress_callback=on_progress)
+def download(url):
+    yt = YouTube(url, on_progress_callback=on_progress)
 
     streams_list = yt.streams.filter(file_extension='mp4', progressive=True)
     print("Available videos:")
@@ -43,3 +39,13 @@ if __name__ == "__main__":
     )
     stream = streams_list[stream_id - 1]
     stream.download()
+
+    print("Download complete")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--url', required=True)
+    args = parser.parse_args()
+
+    download(args.url)
